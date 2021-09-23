@@ -3,7 +3,7 @@ import comments from './mocks/comments';
 class CommentsService {
   findById(id: String) {
     return new Promise((resolve) => resolve(
-      comments.find((comment) => comment.commentId == id),
+      comments.filter((comment) => comment.commentId == id),
     ));
   }
 

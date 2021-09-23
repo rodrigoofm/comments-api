@@ -10,16 +10,24 @@ class CommentsController {
       return response.status(404).json({ error: 'Comment not found!' });
     }
 
-    response.json(comment);
+    response.json([comment]);
   }
 
   async create(request: Request, response: Response) {
     const { id } = request.params;
-    const { user: { name, email, site }, text } = request.body;
+    const {user, text} = request.body;
+
+    if (!user) {
+      return response.status(400).json({ error: 'User is required!' });
+    }
+
+    if (!user.name && !user.email) {
+      return response.status(400).json({ error: 'User and email is required!' });
+    }
 
     const comment = await commentsService.create({
       commentId: id, 
-      user: { name, email, site }, 
+      user, 
       text,
     });
 
