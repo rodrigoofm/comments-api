@@ -10,11 +10,10 @@ class CommentsController {
       return response.status(404).json({ error: 'Comment not found!' });
     }
 
-    response.json([comment]);
+    response.json(comment);
   }
 
   async create(request: Request, response: Response) {
-    const { id } = request.params;
     const {user, text} = request.body;
 
     if (!user) {
@@ -26,7 +25,7 @@ class CommentsController {
     }
 
     const comment = await commentsService.create({
-      commentId: id, 
+      commentId: Math.floor(Math.random() * 65536), 
       user, 
       text,
     });

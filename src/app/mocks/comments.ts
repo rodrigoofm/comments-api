@@ -1,4 +1,5 @@
 let comments = [{
+  postId: "1",
   commentId: "1",
   user: {
     name: "Rodrigo",
