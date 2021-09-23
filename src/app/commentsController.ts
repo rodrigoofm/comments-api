@@ -24,13 +24,13 @@ class CommentsController {
       return response.status(400).json({ error: 'User and email is required!' });
     }
 
-    const comment = await commentsService.create({
+    const comments = await commentsService.create({
       commentId: Math.floor(Math.random() * 65536), 
       user, 
-      text,
+      comment: {text},
     });
 
-    response.json(comment);
+    response.json(comments);
   }
 }
 
