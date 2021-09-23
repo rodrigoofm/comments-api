@@ -14,7 +14,7 @@ class CommentsController {
   }
 
   async create(request: Request, response: Response) {
-    const {user, text} = request.body;
+    const {user, comment} = request.body;
 
     if (!user) {
       return response.status(400).json({ error: 'User is required!' });
@@ -27,7 +27,7 @@ class CommentsController {
     const comments = await commentsService.create({
       commentId: Math.floor(Math.random() * 65536), 
       user, 
-      comment: {text},
+      text: comment.text,
     });
 
     response.json(comments);
