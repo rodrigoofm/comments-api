@@ -7,30 +7,62 @@ class CommentsController {
     const comment = await commentsService.findById(id);
 
     if (!comment) {
-      return response.status(404).json({ error: 'Comment not found!' });
+      return response.status(404).json({ error: "Comment not found!" });
     }
 
     response.json(comment);
   }
 
   async create(request: Request, response: Response) {
-    const {user, comment} = request.body;
+    const { user, comment } = request.body;
 
     if (!user) {
-      return response.status(400).json({ error: 'User is required!' });
+      return response.status(400).json({ error: "User is required!" });
     }
 
     if (!user.name && !user.email) {
-      return response.status(400).json({ error: 'User and email is required!' });
+      return response
+        .status(400)
+        .json({ error: "User and email is required!" });
     }
 
     const comments = await commentsService.create({
-      commentId: Math.floor(Math.random() * 65536), 
-      user, 
+      commentId: Math.floor(Math.random() * 65536),
+      user,
       text: comment.text,
+      like: 0,
+      dislike: 0,
     });
 
     response.json(comments);
+  }
+
+  async like(request: Request, response: Response) {
+    const { postId, commentId } = request.params;
+
+    const validCommentId = await commentsService.like(commentId);
+    const validPostId = await commentsService.findById(postId);
+
+
+    if (!validCommentId && !validPostId) {
+      return response.status(404).json('Comment not found');
+    }
+
+    return response.status(204).send();
+  }
+
+  async dislike(request: Request, response: Response) {
+    const { postId, commentId } = request.params;
+
+    const validCommentId = await commentsService.dislike(commentId);
+    const validPostId = await commentsService.findById(postId);
+
+
+    if (!validCommentId && !validPostId) {
+      return response.status(404).json('Comment not found');
+    }
+
+    return response.status(204).send();
   }
 }
 

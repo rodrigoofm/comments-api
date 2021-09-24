@@ -7,6 +7,8 @@ let comments = [{
     site: null,
   },
   text: "Shoow!",
+  like: 1,
+  dislike: 0,
   createdAt: new Date(),
 }];
 
