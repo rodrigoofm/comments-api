@@ -1,13 +1,6 @@
-import { response } from "express";
 import comments from "./mocks/comments";
 
 class CommentsService {
-  findById(id: String) {
-    return new Promise((resolve) =>
-      resolve(comments.filter((comment) => comment.postId == id))
-    );
-  }
-
   create({
     postId,
     commentId,
@@ -31,6 +24,14 @@ class CommentsService {
       resolve(newComment);
     });
   }
+
+  findById(id: String) {
+    return new Promise((resolve) => {
+      const comment = comments.find((value) => value.postId == id);
+      
+      resolve(comment)
+    }
+  )}
 
   like(id: String) {
     return new Promise((resolve) => {

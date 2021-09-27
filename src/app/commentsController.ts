@@ -2,19 +2,9 @@ import { Request, Response } from "express";
 import commentsService from "./commentsService";
 
 class CommentsController {
-  async findById(request: Request, response: Response) {
-    const { id } = request.params;
-    const comment = await commentsService.findById(id);
-
-    if (!comment) {
-      return response.status(404).json({ error: "Comment not found!" });
-    }
-
-    response.json(comment);
-  }
-
   async create(request: Request, response: Response) {
     const { user, comment } = request.body;
+    const { postId } = request.params;
 
     if (!user) {
       return response.status(400).json({ error: "User is required!" });
@@ -26,7 +16,8 @@ class CommentsController {
         .json({ error: "User and email is required!" });
     }
 
-    const comments = await commentsService.create({
+    const comments = await commentsService.create({   
+      postId,   
       commentId: Math.floor(Math.random() * 65536),
       user,
       text: comment.text,
@@ -37,12 +28,22 @@ class CommentsController {
     response.json(comments);
   }
 
+  async findById(request: Request, response: Response) {
+    const { postId } = request.params;
+    const comment = await commentsService.findById(postId);
+    
+    if (!comment) {
+      return response.status(404).json({ error: "Post not found!" });
+    }
+
+    response.json(comment);
+  }
+
   async like(request: Request, response: Response) {
     const { postId, commentId } = request.params;
 
     const validCommentId = await commentsService.like(commentId);
     const validPostId = await commentsService.findById(postId);
-
 
     if (!validCommentId && !validPostId) {
       return response.status(404).json('Comment not found');
