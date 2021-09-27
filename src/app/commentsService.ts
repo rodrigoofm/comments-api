@@ -35,34 +35,34 @@ class CommentsService {
 
   findCommentId(id: String) {
     return new Promise((resolve) => {
-      const comment = comments.filter((value) => value.commentId == id);
+      const comment = comments.find((value) => value.commentId == id);
       
       resolve(comment)
     }
   )}
 
-  like(id: String) {
+  like(postId: String, commentId: String) {
     return new Promise((resolve) => {
-      const validCommentId = this.findCommentId(id);
+      const validLike = comments.find((value) => value.postId == postId && value.commentId == commentId);
 
-      // if (!validCommentId) {
-      //   throw new Error('Not found postId and commentId');
-      // };
+      if (!validLike) {
+        throw new Error('Not found postId and commentId');
+      };
       
-      const countLike = validCommentId.like ++;
+      const countLike = validLike.like ++;
       resolve(countLike);
     });
   }
 
-  dislike(id: String) {
+  dislike(postId: String, commentId: String) {
     return new Promise((resolve) => {
-      const validCommentId = comments.find((value) => value.commentId == id);
+      const validDislike = comments.find((value) => value.postId == postId && value.commentId == commentId);
       
-      if (!validCommentId) {
+      if (!validDislike) {
         throw new Error('Not found postId and commentId');
       };
       
-      const countDislike = validCommentId.dislike ++;
+      const countDislike = validDislike.dislike ++;
       resolve(countDislike);
     });
   }
