@@ -30,11 +30,7 @@ class CommentsController {
 
   async findById(request: Request, response: Response) {
     const { postId } = request.params;
-    const comment = await commentsService.findById(postId);
-    
-    if (!comment) {
-      return response.status(404).json({ error: "Post not found!" });
-    }
+    const comment = await commentsService.findPostId(postId);
 
     response.json(comment);
   }
@@ -43,7 +39,7 @@ class CommentsController {
     const { postId, commentId } = request.params;
 
     const validCommentId = await commentsService.like(commentId);
-    const validPostId = await commentsService.findById(postId);
+    const validPostId = await commentsService.findPostId(postId);
 
     if (!validCommentId && !validPostId) {
       return response.status(404).json('Comment not found');
@@ -56,7 +52,7 @@ class CommentsController {
     const { postId, commentId } = request.params;
 
     const validCommentId = await commentsService.dislike(commentId);
-    const validPostId = await commentsService.findById(postId);
+    const validPostId = await commentsService.findPostId(postId);
 
 
     if (!validCommentId && !validPostId) {

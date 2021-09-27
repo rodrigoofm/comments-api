@@ -25,9 +25,17 @@ class CommentsService {
     });
   }
 
-  findById(id: String) {
+  findPostId(id: String) {
     return new Promise((resolve) => {
-      const comment = comments.find((value) => value.postId == id);
+      const comment = comments.filter((value) => value.postId == id);
+      
+      resolve(comment)
+    }
+  )}
+
+  findCommentId(id: String) {
+    return new Promise((resolve) => {
+      const comment = comments.filter((value) => value.commentId == id);
       
       resolve(comment)
     }
@@ -35,11 +43,11 @@ class CommentsService {
 
   like(id: String) {
     return new Promise((resolve) => {
-      const validCommentId = comments.find((value) => value.commentId == id);
-      
-      if (!validCommentId) {
-        throw new Error('Not found postId and commentId');
-      };
+      const validCommentId = this.findCommentId(id);
+
+      // if (!validCommentId) {
+      //   throw new Error('Not found postId and commentId');
+      // };
       
       const countLike = validCommentId.like ++;
       resolve(countLike);
