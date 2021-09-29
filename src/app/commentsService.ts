@@ -4,6 +4,7 @@ class CommentsService {
   create({
     postId,
     commentId,
+    parentCommentId,
     user: { name, email, site },
     text,
     like,
@@ -13,6 +14,7 @@ class CommentsService {
       const newComment = {
         postId,
         commentId,
+        parentCommentId,
         user: { name, email, site },
         text,
         like,
