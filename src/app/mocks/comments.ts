@@ -1,4 +1,5 @@
 let comments = [{
+  postId: "1",
   commentId: "1",
   parentCommentId: null,
   user: {
@@ -11,6 +12,7 @@ let comments = [{
   dislike: 0,
   createdAt: new Date(),
   children: [{
+    postId: '',
     commentId: "12",
     parentCommentId: "1",
     user: {
@@ -19,6 +21,8 @@ let comments = [{
       site: null
     },
     text: "Sucesso! :)",
+    like: 0,
+    dislike: 0,
     createdAt: new Date(),
   }]
 }];

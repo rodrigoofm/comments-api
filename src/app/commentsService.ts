@@ -12,30 +12,36 @@ class CommentsService {
     return new Promise((resolve) => {
       const newComment = {
         postId,
-        commentId: Math.floor(Math.random() * 65536),
+        commentId: Math.floor(Math.random() * 65536).toString(),
         parentCommentId,
         user: { name, email, site },
         text,
         like: 0,
         dislike: 0,
         createdAt: new Date(),
+        children: [],
       };
 
 
       if (newComment.parentCommentId) {
-        const newAnswer = {
-          ...newComment,
-          children: [{
-            commentId: Math.floor(Math.random() * 65536),
-            parentCommentId,
-            user: { name, email, site },
-            text,
-            createdAt: new Date(),
-          }],
+        const parentComment = comments.find((value) => value.postId == postId && value.commentId == parentCommentId);
+
+        if (!parentComment) {
+          throw new Error('parentCommentId not found!');
         }
-        console.log(newAnswer)
-        comments.push(newAnswer);
-        resolve(newAnswer);
+
+        const answer = parentComment.children.push({
+          postId: newComment.postId,
+          commentId: newComment.commentId.toString(),
+          parentCommentId: newComment.parentCommentId,
+          user: newComment.user,
+          text: newComment.text,
+          like: 0,
+          dislike: 0,
+          createdAt: newComment.createdAt,
+        })
+        resolve(answer);
+        return;
       }
 
       comments.push(newComment);
