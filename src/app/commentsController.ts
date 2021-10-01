@@ -3,9 +3,8 @@ import commentsService from "./commentsService";
 
 class CommentsController {
   async create(request: Request, response: Response) {
-    const { user, comment, parentCommentId } = request.body;
+    const { commentId, user, comment, like, dislike } = request.body;
     const { postId } = request.params;
-    console.log(comment.parentCommentId)
     if (!user) {
       return response.status(400).json({ error: "User is required!" });
     }
@@ -16,17 +15,18 @@ class CommentsController {
         .json({ error: "User and email is required!" });
     }
 
-    const comments = await commentsService.create({
+    const newComment = await commentsService.create({
       postId,
-      commentId: Math.floor(Math.random() * 65536),
+      commentId,
       parentCommentId: comment.parentCommentId,
       user,
       text: comment.text,
-      like: 0,
-      dislike: 0,
+      like,
+      dislike,
     });
 
-    response.json(comments);
+    
+    response.json(newComment);
   }
 
   async findById(request: Request, response: Response) {

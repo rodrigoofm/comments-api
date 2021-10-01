@@ -3,24 +3,39 @@ import comments from "./mocks/comments";
 class CommentsService {
   create({
     postId,
-    commentId,
     parentCommentId,
     user: { name, email, site },
     text,
-    like,
-    dislike,
+    children,
   }: any) {
     return new Promise((resolve) => {
+      const id = Math.floor(Math.random() * 65536)
       const newComment = {
         postId,
-        commentId,
+        commentId: id,
         parentCommentId,
         user: { name, email, site },
         text,
-        like,
-        dislike,
+        like: 0,
+        dislike: 0,
         createdAt: new Date(),
       };
+
+      
+      if (newComment.parentCommentId) {
+        const newAnswer = {
+          children: [{
+            commentId: Math.floor(Math.random() * 65536),
+            parentCommentId,
+            user: { name, email, site },
+            text,
+            createdAtC: new Date(),
+          }],
+        }
+
+        comments.push(newAnswer);
+        resolve(newAnswer);
+      }
 
       comments.push(newComment);
       resolve(newComment);
